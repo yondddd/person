@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lm.blog.server.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.lm.blog.server.model.UserDO">
+        <!--@mbg.generated-->
+        <!--@Table research_source-->
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <result column="creation_time" jdbcType="TIMESTAMP" property="creationTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, name, email, mobile, status, creation_time, update_time
+    </sql>
+
+    <select id="getById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete from user
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.lm.blog.server.model.UserDO" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                name,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="creationTime != null">
+                creation_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="creationTime != null">
+                #{creationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.lm.blog.server.model.UserDO">
+        <!--@mbg.generated-->
+        update user
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="creationTime != null">
+                creation_time = #{creationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="selectBy" parameterType="com.lm.blog.server.model.UserDO" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from
+        user
+        <where>
+            <if test="id != null">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="name != null">
+                and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null">
+                and email = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="mobile != null">
+                and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+                and status = #{status,jdbcType=TINYINT}
+            </if>
+            <if test="creationTime != null">
+                and creation_time = #{creationTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+
+    <select id="getByEmail" resultType="com.lm.blog.server.model.UserDO">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where email = #{email,jdbcType=VARCHAR}
+    </select>
+
+    <select id="listAll" resultType="com.lm.blog.server.model.UserDO">
+        select
+        <include refid="Base_Column_List" />
+        from user
+    </select>
+
+    <select id="getByMobile" resultType="com.lm.blog.server.model.UserDO">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where mobile= #{mobile,jdbcType=VARCHAR}
+    </select>
+    <select id="listByEmailLike" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where email like concat ('%',#{email,jdbcType=VARCHAR},'%');
+    </select>
+
+    <insert id="insertBatch">
+        insert into `user`(name,email,
+        mobile,status)
+        values
+        <foreach collection="userDOCollection" item="item" separator=",">
+            (#{item.name,jdbcType=VARCHAR},#{item.email,jdbcType=VARCHAR},
+            #{item.mobile,jdbcType=VARCHAR},#{item.status,jdbcType=TINYINT})
+        </foreach>
+    </insert>
+
+
+</mapper>
